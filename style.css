@@ -1,0 +1,72 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+#funcao, button {
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#funcao:hover, button:hover {
+    opacity: 0.8;
+}
+
+button:active {
+    transform: scale(0.95);
+    opacity: 1;
+}
+
+#funcao:focus, button:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5), 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#grafico {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 30px;
+    margin: 10px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 10px;
+
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .buttons {
+        grid-template-columns: 1fr;
+    }
+
+    #grafico {
+        height: 30vh;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    #funcao, button {
+        padding: 5px;
+        font-size: 15px;
+    }
+
+    
+}

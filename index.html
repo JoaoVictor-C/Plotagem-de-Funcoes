@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.2/math.js"></script>
+    <title>Plotagem de graficos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Plotagem de gráficos</h1>
+    <input type="text" id="funcao" placeholder="Digite a função">
+    <div class="buttons">
+        <button onclick="plotarGrafico()">Plotar</button>
+        <button onclick="limparGrafico()">Limpar gráficos</button>
+        <button onclick="modoCicloTrigonometrico()">
+            Modo Ciclo Trigonométrico
+        </button>
+    </div>
+    <div id="grafico"></div>
+    <script src="script.js"></script>
+</body>
+</html>
