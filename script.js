@@ -103,7 +103,7 @@ modoCicloTrigonometrico = () => {
     // Adicionando a função à lista
     listaDeFuncoes.push(funcao);
 
-    let x = math.range(-2 * Math.PI, 2 * Math.PI, 0.00000001)._data;
+    let x = math.range(-2 * Math.PI, 2 * Math.PI, 0.0001)._data;
     let y = x.map((valor) => {
         // Avaliando a função para cada valor de x
         try {
