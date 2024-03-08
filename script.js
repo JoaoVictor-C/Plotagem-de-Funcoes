@@ -1,6 +1,7 @@
 // Lista para armazenar os traços do gráfico
 let listaDeGraficos = [];
 let listaDeFuncoes = [];
+let rangeInicial = 0;
 
 // Função que irá plotar o gráfico
 plotarGrafico = () => {
@@ -85,7 +86,10 @@ limparGrafico = () => {
     plotarGrafico();
 }
 
-modoCicloTrigonometrico = () => {
+limparGrafico();
+
+function modoCicloTrigonometrico() {
+    console.log(`Range inicial 1: ${rangeInicial}`);
     let funcao = document.getElementById('funcao').value.trim();
     funcao = funcao.replace(/sen/g, 'sin');
 
@@ -95,10 +99,12 @@ modoCicloTrigonometrico = () => {
     } catch (error) {
         return;
     }  
+    console.log(`Range inicial 2: ${rangeInicial}`);
 
-    // Se a função já estiver na lista, não faz nada
+    // Se a função já estiver na lista, remove a da lista
     if (listaDeFuncoes.includes(funcao)) {
-        return;
+        listaDeFuncoes.splice(listaDeFuncoes.indexOf(funcao), 1);
+        listaDeGraficos.splice(listaDeFuncoes.indexOf(funcao), 1);
     }
     // Adicionando a função à lista
     listaDeFuncoes.push(funcao);
@@ -112,6 +118,7 @@ modoCicloTrigonometrico = () => {
             return undefined;
         }
     });
+    console.log(`Range inicial 3: ${rangeInicial}`);
 
     
 
@@ -120,20 +127,21 @@ modoCicloTrigonometrico = () => {
         y: y,
         type: 'scatter'
     };
-
+    console.log(`Range inicial 2: ${rangeInicial}`);
     let layout = {
         title: 'Gráfico do ciclo trigonométrico',
         xaxis: {
             title: 'Eixo x',
             tickmode: 'array',
-            tickvals: [-2 * Math.PI, -11 * Math.PI / 6, -7 * Math.PI / 4, -5 * Math.PI / 3, -3 * Math.PI / 2, -4 * Math.PI / 3, -5 * Math.PI / 4, -7 * Math.PI / 6, Math.PI, -5 * Math.PI / 6, -3 * Math.PI / 4, -2 * Math.PI / 3, -Math.PI / 2, -Math.PI / 3, -Math.PI / 4, -Math.PI / 6, 0,  Math.PI / 6, Math.PI / 4, Math.PI / 3, Math.PI / 2, 2 * Math.PI / 3, 3 * Math.PI / 4, 5 * Math.PI / 6, Math.PI, 7 * Math.PI / 6, 5 * Math.PI / 4, 4 * Math.PI / 3, 3 * Math.PI / 2, 5 * Math.PI / 3, 7 * Math.PI / 4, 11 * Math.PI / 6, 2 * Math.PI],
+            tickvals: [-2 * Math.PI, -11 * Math.PI / 6, -7 * Math.PI / 4, -5 * Math.PI / 3, -3 * Math.PI / 2, -4 * Math.PI / 3, -5 * Math.PI / 4, -7 * Math.PI / 6, -Math.PI, -5 * Math.PI / 6, -3 * Math.PI / 4, -2 * Math.PI / 3, -Math.PI / 2, -Math.PI / 3, -Math.PI / 4, -Math.PI / 6, 0,  Math.PI / 6, Math.PI / 4, Math.PI / 3, Math.PI / 2, 2 * Math.PI / 3, 3 * Math.PI / 4, 5 * Math.PI / 6, Math.PI, 7 * Math.PI / 6, 5 * Math.PI / 4, 4 * Math.PI / 3, 3 * Math.PI / 2, 5 * Math.PI / 3, 7 * Math.PI / 4, 11 * Math.PI / 6, 2 * Math.PI],
             ticktext: ['-2π', '-11π/6', '-7π/4', '-5π/3', '-3π/2', '-4π/3', '-5π/4', '-7π/6', '-π', '-5π/6', '-3π/4', '-2π/3', '-π/2', '-π/3', '-π/4', '-π/6', '0', 'π/6', 'π/4', 'π/3', 'π/2', '2π/3', '3π/4', '5π/6', 'π', '7π/6', '5π/4', '4π/3', '3π/2', '5π/3', '7π/4', '11π/6', '2π'],
             tickfont: {
                 family: 'Roboto, sans-serif', 
                 size: 13,
                 color: 'black'
             },
-            range: [-2 * Math.PI, 2 * Math.PI]
+            
+            range: [rangeInicial, 2 * Math.PI]
         },
         yaxis: {
             title: 'Eixo y',
@@ -143,6 +151,8 @@ modoCicloTrigonometrico = () => {
                 color: 'black' 
             }
         },
+        
+            
 
     };
 
@@ -150,5 +160,13 @@ modoCicloTrigonometrico = () => {
     Plotly.newPlot('grafico', listaDeGraficos, layout, { responsive: true, scrollZoom: true });
 }
 
-// Plotando o gráfico
-limparGrafico();
+alterarVisibilidade = () => {
+    if (rangeInicial == -2 * Math.PI) {
+        rangeInicial = 0;
+    }
+    else if (rangeInicial == 0) {
+        rangeInicial = -2 * Math.PI;
+    }
+    console.log(rangeInicial);
+    modoCicloTrigonometrico();
+}
