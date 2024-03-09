@@ -157,7 +157,7 @@ function modoCicloTrigonometrico() {
     };
 
     listaDeGraficos.push(novoGrafico);
-    Plotly.newPlot('grafico', listaDeGraficos, layout, { responsive: true, scrollZoom: true });
+    Plotly.newPlot('grafico', listaDeGraficos, layout, { responsive: true, scrollZoom: true, staticPlot: true });
 }
 
 alterarVisibilidade = () => {
