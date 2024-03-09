@@ -39,7 +39,8 @@ plotarGrafico = () => {
     let novoGrafico = {
         x: x,
         y: y,
-        type: 'scatter'
+        type: 'scatter',
+        name: funcao
     };
     if (listaDeGraficos.length === 1 && listaDeGraficos[0].y[0] == undefined) {
         listaDeGraficos[0].x = x;
@@ -103,9 +104,16 @@ function modoCicloTrigonometrico() {
 
     // Se a função já estiver na lista, remove a da lista
     if (listaDeFuncoes.includes(funcao)) {
-        listaDeFuncoes.splice(listaDeFuncoes.indexOf(funcao), 1);
-        listaDeGraficos.splice(listaDeFuncoes.indexOf(funcao), 1);
+        let index = listaDeFuncoes.indexOf(funcao);
+        listaDeFuncoes.splice(index, 1);
+        listaDeGraficos.splice(index, 1);
     }
+
+    // Ao adicionar o primeiro gráfico, o gráfico padrão é deletado
+    if (listaDeGraficos.length === 1 && listaDeGraficos[0].y[0] == undefined) {
+        listaDeGraficos = [];
+    }
+
     // Adicionando a função à lista
     listaDeFuncoes.push(funcao);
 
@@ -125,7 +133,8 @@ function modoCicloTrigonometrico() {
     let novoGrafico = {
         x: x,
         y: y,
-        type: 'scatter'
+        type: 'scatter',
+        name: funcao
     };
     console.log(`Range inicial 2: ${rangeInicial}`);
     let layout = {
@@ -137,7 +146,7 @@ function modoCicloTrigonometrico() {
             ticktext: ['-2π', '-11π/6', '-7π/4', '-5π/3', '-3π/2', '-4π/3', '-5π/4', '-7π/6', '-π', '-5π/6', '-3π/4', '-2π/3', '-π/2', '-π/3', '-π/4', '-π/6', '0', 'π/6', 'π/4', 'π/3', 'π/2', '2π/3', '3π/4', '5π/6', 'π', '7π/6', '5π/4', '4π/3', '3π/2', '5π/3', '7π/4', '11π/6', '2π'],
             tickfont: {
                 family: 'Roboto, sans-serif', 
-                size: 13,
+                size: 14,
                 color: 'black'
             },
             
@@ -147,12 +156,27 @@ function modoCicloTrigonometrico() {
             title: 'Eixo y',
             tickfont: {
                 family: 'Roboto, sans-serif',
-                size: 13,
+                size: 14,
                 color: 'black' 
             }
         },
-        
-            
+        legend: {
+            text: listaDeFuncoes.join(', '),
+            x: 1,
+            y: 1,
+            traceorder: 'normal',
+            font: {
+                family: 'Roboto, sans-serif',
+                size: 10,
+                color: '#000'
+            },
+        },
+        margin: {
+            l: 40,
+            r: 40,
+            b: 40,
+            t: 40
+        },
 
     };
 
