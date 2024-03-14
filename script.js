@@ -3,32 +3,29 @@ let listaDeGraficos = [];
 let listaDeFuncoes = [];
 let rangeInicial = 0;
 
+let modoTrigonometrico = false;
+
 // Função que irá plotar o gráfico
 plotarGrafico = () => {
+    modoTrigonometrico = false;
     // Pegando o valor do input
     let funcao = document.getElementById('funcao').value.trim();
-    funcao = funcao.replace(/sen/g, 'sin');
-
-    // Verificando se a função é válida
-    try {
-        math.evaluate(funcao, { x: 0 });
-    } catch (error) {
-        return;
-    }   
-
-    // Se a função já estiver na lista, não faz nada
-    if (listaDeFuncoes.includes(funcao)) {
-        return;
-    }
-    // Adicionando a função à lista
-    listaDeFuncoes.push(funcao); 
+        //Caso tenha uma função com mesmo nome, substitui
+        if (listaDeFuncoes.includes(funcao) || listaDeFuncoes[0] == '') {
+            let index = listaDeFuncoes.indexOf(funcao);
+            listaDeFuncoes.splice(index, 1);
+            listaDeGraficos.splice(index, 1);
+        }
+    
+        // Adicionando a função à lista
+        listaDeFuncoes.push(funcao);
     
     // Criando um vetor de valores de x
-    let x = math.range(-10, 10, 0.005)._data;
+    let x = math.range(rangeInicial, 25, 0.008)._data;
     // Criando um vetor de valores de y
     let y = x.map((valor) => {
-        // Avaliando a função para cada valor de x
         try {
+            // Avaliando a função para cada valor de x
             return math.evaluate(funcao, { x: valor });
         } catch (error) {
             return undefined;
@@ -49,7 +46,6 @@ plotarGrafico = () => {
         listaDeGraficos.push(novoGrafico);
     }
     if (listaDeGraficos.length > 1) {
-        console.log(listaDeFuncoes)
         if (listaDeFuncoes[0] == '') {
             listaDeFuncoes.shift();
         }
@@ -57,15 +53,64 @@ plotarGrafico = () => {
     } else {
         var title = 'Gráfico da função: ' + funcao;
     }
+
+    let range = 5;
+    listaDeGraficos.forEach((grafico) => {
+        grafico.x.forEach((valor) => {
+            if (valor <= 5) {
+                range = grafico.y[grafico.x.indexOf(valor)];
+            }
+        });
+    });
+    console.log(range);
+    if (range > 5) {
+        if (range >= 50) {
+            range = 100;
+        }
+        else if (range > 25) {
+            range = 50;
+        } else if (range > 10) {
+            range = 25;
+        } else {
+            range = 10;
+        }
+    } else {
+        range = 5; 
+    }
     
     // Configurações do gráfico
     let layout = {
         title: title,
         xaxis: {
-            title: 'Eixo x'
+            title: 'Eixo x',
+            tickmode: 'array',
+            tickvals: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            tickfont: {
+                family: 'Roboto, sans-serif', 
+                size: 14,
+                color: 'black'
+            },
+            range: [rangeInicial, 5]
         },
         yaxis: {
-            title: 'Eixo y'
+            title: 'Eixo y',
+            tickfont: {
+                family: 'Roboto, sans-serif',
+                size: 14,
+                color: 'black' 
+            },
+            range: [0, range]
+        },
+        legend: {
+            text: listaDeFuncoes.join(', '),
+            x: 1,
+            y: 1,
+            traceorder: 'normal',
+            font: {
+                family: 'Roboto, sans-serif',
+                size: 10,
+                color: '#000'
+            }
         },
         margin: {
             l: 40,
@@ -77,7 +122,6 @@ plotarGrafico = () => {
 
     // Plotando o gráfico com todos os traços da lista
     Plotly.newPlot('grafico', listaDeGraficos, layout, { responsive: true, scrollZoom: true });
-    document.getElementById('funcao').value = '';
 }
 
 limparGrafico = () => {
@@ -90,7 +134,7 @@ limparGrafico = () => {
 limparGrafico();
 
 function modoCicloTrigonometrico() {
-    console.log(`Range inicial 1: ${rangeInicial}`);
+    modoTrigonometrico = true;
     let funcao = document.getElementById('funcao').value.trim();
     funcao = funcao.replace(/sen/g, 'sin');
 
@@ -100,7 +144,6 @@ function modoCicloTrigonometrico() {
     } catch (error) {
         return;
     }  
-    console.log(`Range inicial 2: ${rangeInicial}`);
 
     // Se a função já estiver na lista, remove a da lista
     if (listaDeFuncoes.includes(funcao)) {
@@ -117,7 +160,7 @@ function modoCicloTrigonometrico() {
     // Adicionando a função à lista
     listaDeFuncoes.push(funcao);
 
-    let x = math.range(-2 * Math.PI, 2 * Math.PI, 0.0001)._data;
+    let x = math.range(-2 * Math.PI, 2 * Math.PI, 0.008)._data;
     let y = x.map((valor) => {
         // Avaliando a função para cada valor de x
         try {
@@ -126,8 +169,6 @@ function modoCicloTrigonometrico() {
             return undefined;
         }
     });
-    console.log(`Range inicial 3: ${rangeInicial}`);
-
     
 
     let novoGrafico = {
@@ -136,7 +177,6 @@ function modoCicloTrigonometrico() {
         type: 'scatter',
         name: funcao
     };
-    console.log(`Range inicial 2: ${rangeInicial}`);
     let layout = {
         title: 'Gráfico do ciclo trigonométrico',
         xaxis: {
@@ -185,12 +225,21 @@ function modoCicloTrigonometrico() {
 }
 
 alterarVisibilidade = () => {
-    if (rangeInicial == -2 * Math.PI) {
+    if (rangeInicial != 0) {
         rangeInicial = 0;
+        if (modoTrigonometrico) {
+            modoCicloTrigonometrico();
+        } else {
+            plotarGrafico();
+        }
+    } else {
+        if (modoTrigonometrico) {
+            rangeInicial = -2 * Math.PI;
+            modoCicloTrigonometrico();
+        } else {
+            rangeInicial = -5;
+            plotarGrafico();
+        }
     }
-    else if (rangeInicial == 0) {
-        rangeInicial = -2 * Math.PI;
-    }
-    console.log(rangeInicial);
-    modoCicloTrigonometrico();
+    
 }
